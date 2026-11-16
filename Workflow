@@ -1,0 +1,33 @@
+PHASE -1
+Create a React Application with the Docker file and nginix config file
+
+PHASE -2
+Push Docker configuration to GitHub
+
+PHASE -3
+Create AWS EC2 Instance
+
+PHASE -4
+Prepare Your AWS Server
+-Install Git
+-Install Docker
+
+Create your Ubuntu EC2 instance.
+Connect to it using SSH from Windows.
+Install Git and Docker.
+Verify Docker is running.
+
+PHASE -5
+-Install Jenkins on AWS EC2
+-Access Jenkins Dashboard
+
+PHASE -6
+Create AWS ECR Repository
+
+What is AWS ECR?
+Think about our project:
+- GitHub stores your application source code.
+- Jenkins builds your application.
+- Docker creates an image.
+- AWS ECR stores that Docker image.
+- AWS EC2 downloads and runs that image.
