@@ -1,0 +1,29 @@
+For Docker
+
+React Application
+       |
+       v
+   Vite Build
+       |
+       v
+   Docker Image
+       |
+       v
+  Docker Container
+       |
+       v
+   Nginx Server
+       |
+       v
+http://localhost:8081/react-basics-notes-todo/
+
+
+
+Phase	Status
+React application	✅ Working
+Vite production build	✅ Working
+Dockerfile	✅ Configured
+Nginx configuration	✅ Configured
+Docker image	✅ Built
+Docker container	✅ Running
+Application in Docker	✅ Working
