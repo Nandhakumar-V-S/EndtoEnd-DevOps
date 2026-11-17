@@ -69,3 +69,6 @@ Automate Everything Using Jenkins CI/CD
 
 PHASE -9 
 Configure Jenkins Server Permissions
+
+PHASE -10
+Create Jenkins Pipeline
