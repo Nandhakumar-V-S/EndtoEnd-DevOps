@@ -31,3 +31,41 @@ Think about our project:
 - Docker creates an image.
 - AWS ECR stores that Docker image.
 - AWS EC2 downloads and runs that image.
+
+PHASE -7 
+- Build Docker Image and Push to AWS ECR
+- Inspect Docker Configuration
+- Add ubuntu user to Docker group
+- Activate the new group
+- Verify Docker permissions
+- Build your React Docker image again
+- Tag Docker Image for AWS ECR
+- Docker Image Push to AWS ECR
+- Deploy React Application on EC2 using Docker.
+
+PHASE -8 
+Deploy React Application on AWS EC2 Using Docker
+– Verify Docker Image
+- Pull Image from AWS ECR
+- Run the Application
+- Access the Application
+
+PHASE -7 
+Deployment Completed
+
+Component	Configuration
+EC2 OS	Ubuntu
+Jenkins	Port 8080
+React Application	Port 8081
+Docker	Installed
+AWS ECR	Configured
+ECR Repository	devops-react-app
+Docker Image	v1
+Container	devops-react-container
+Web Server	Nginx
+
+PHASE -8 
+Automate Everything Using Jenkins CI/CD
+
+PHASE -9 
+Configure Jenkins Server Permissions
