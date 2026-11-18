@@ -72,3 +72,6 @@ Configure Jenkins Server Permissions
 
 PHASE -12
 Create Jenkins Pipeline
+Configure Pipeline Script
+Definition: Pipeline script
+Verify the application
