@@ -50,7 +50,7 @@ Deploy React Application on AWS EC2 Using Docker
 - Run the Application
 - Access the Application
 
-PHASE -7 
+PHASE -9 
 Deployment Completed
 
 Component	Configuration
@@ -64,11 +64,11 @@ Docker Image	v1
 Container	devops-react-container
 Web Server	Nginx
 
-PHASE -8 
+PHASE -10 
 Automate Everything Using Jenkins CI/CD
 
-PHASE -9 
+PHASE -11
 Configure Jenkins Server Permissions
 
-PHASE -10
+PHASE -12
 Create Jenkins Pipeline
