@@ -3,13 +3,13 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION    = 'ap-south-1'
-        AWS_ACCOUNT   = '504895205437'
+        AWS_REGION     = 'ap-south-1'
+        AWS_ACCOUNT    = '504895205437'
         ECR_REPOSITORY = 'devops-react-app'
-        ECR_REGISTRY  = '504895205437.dkr.ecr.ap-south-1.amazonaws.com'
+        ECR_REGISTRY   = '504895205437.dkr.ecr.ap-south-1.amazonaws.com'
 
-        IMAGE_NAME    = 'devops-react-app'
-        IMAGE_TAG     = "${BUILD_NUMBER}"
+        IMAGE_NAME     = 'devops-react-app'
+        IMAGE_TAG      = "${BUILD_NUMBER}"
 
         CONTAINER_NAME = 'devops-react-container'
         APP_PORT       = '8081'
@@ -19,22 +19,58 @@ pipeline {
 
         stage('Checkout Source Code') {
             steps {
-                checkout scm
+                git branch: 'main',
+                    url: 'https://github.com/Nandhakumar-V-S/EndtoEnd-DevOps.git'
             }
         }
+        
+        stage('Validate Environment and Tools') {
+            steps {
+                sh '''
+                    set -e
+                    echo "Checking installed tools..."
 
+                    git --version
+                    docker --version
+                    aws --version
+                    
+                    echo "Checking AWS identity..."
+                    ACTUAL_ACCOUNT=$(aws sts get-caller-identity \
+                        --query Account \
+                        --output text)
+                    echo "AWS Account: $ACTUAL_ACCOUNT"
+                    if [ "$ACTUAL_ACCOUNT" != "$AWS_ACCOUNT" ]; then
+                        echo "ERROR: AWS account mismatch!"
+                        exit 1
+                    fi
+                    echo "Environment validation successful."
+                '''
+            }
+        }
+        
         stage('Build Docker Image') {
             steps {
                 dir('react-basics-notes-todo-main') {
                     sh '''
                         set -e
-
-                        docker build \
-                            -t ${IMAGE_NAME}:${IMAGE_TAG} .
+                        docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
                     '''
                 }
             }
         }
+        
+         stage('Validate Docker Image') {
+             steps {
+                 sh '''
+                     set -e
+                     echo "Checking Docker image..."
+                     docker image inspect \
+                         ${IMAGE_NAME}:${IMAGE_TAG} > /dev/null
+                     docker image ls ${IMAGE_NAME}
+                     echo "Docker image validation successful."
+                 '''
+             }
+         }
 
         stage('Login to AWS ECR') {
             steps {
@@ -50,7 +86,7 @@ pipeline {
             }
         }
 
-        stage('Tag and Push Image') {
+        stage('Push Docker Image to ECR') {
             steps {
                 sh '''
                     set -e
@@ -65,7 +101,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to EC2') {
+        stage('Deploy Application') {
             steps {
                 sh '''
                     set -e
@@ -89,16 +125,34 @@ pipeline {
                 '''
             }
         }
+        
+        stage('Deployment Summary') {
+            steps {
+                sh '''
+                   echo "       DEPLOYMENT SUMMARY"
+                   
+                    echo "Application: ${IMAGE_NAME}"
+                    echo "Build Number: ${BUILD_NUMBER}"
+                    echo "Docker Image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}"
+                    echo "Container: ${CONTAINER_NAME}"
+                    echo "Application Port: ${APP_PORT}"
+                    echo "Application URL: ${APP_URL}"
+
+                  
+                    docker ps --filter name=${CONTAINER_NAME}
+                '''
+            }
+        }
     }
 
     post {
         success {
             echo 'CI/CD Pipeline completed successfully!'
-            echo "Docker Image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}"
+            echo "Deployed image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}"
         }
 
         failure {
-            echo 'CI/CD Pipeline failed. Please check the Jenkins console output.'
+            echo 'CI/CD Pipeline failed. Check Console Output.'
         }
     }
 }
