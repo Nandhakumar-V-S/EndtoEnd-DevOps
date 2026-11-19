@@ -26,7 +26,7 @@ function TodoForm({ onAddTask }) {
           type="text"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
-          placeholder="e.g. End to End (DevOps)"
+          placeholder="e.g. End to End (Docker Image Push) "
           maxLength={100}
         />
 
